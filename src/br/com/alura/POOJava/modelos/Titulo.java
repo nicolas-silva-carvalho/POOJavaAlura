@@ -1,5 +1,8 @@
 package br.com.alura.POOJava.modelos;
 
+import br.com.alura.POOJava.excecao.ErroDeConversaoDeAnoException;
+import com.google.gson.annotations.SerializedName;
+
 public class Titulo {
     private String nome;
     private int anoDeLancamento;
@@ -7,6 +10,19 @@ public class Titulo {
     private double somaDasAvaliacoes;
     private int totalDeAvaliacoes;
     private int duracaoEmMinutos;
+
+    public Titulo(TituloOmdb filme) {
+        this.nome = filme.title();
+        if (filme.year().length() > 4){
+            throw new ErroDeConversaoDeAnoException("Não consegui converter o ano por que tem mais de 4 carcteres:");
+        }
+        this.anoDeLancamento = Integer.valueOf(filme.year());
+        this.duracaoEmMinutos = Integer.valueOf(filme.runtime().substring(0, 2));
+    }
+
+    public Titulo() {
+
+    }
 
     public String getNome() {
         return nome;
@@ -52,5 +68,11 @@ public class Titulo {
     public void avalia(double nota){
         somaDasAvaliacoes += nota;
         totalDeAvaliacoes++;
+    }
+
+    public String toString() {
+        return "nome='" + nome + '\'' +
+                ", anoDeLancamento=" + anoDeLancamento + "," +
+                " duração " + duracaoEmMinutos;
     }
 }
